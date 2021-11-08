@@ -10,8 +10,47 @@ class FiniteAutomata:
         self.f = set_of_final_states
         self.s = transitions
 
-    def is_dfa(self) -> bool:
+    def is_accepted(self, input_sequence) -> bool:
+        if self.is_dfa():
+            current_state = self.q0
+
+            for symbol in input_sequence:
+                if (current_state, symbol) in self.s.keys():
+                    current_state = self.s[(current_state, symbol)][0]
+                else:
+                    return False
+
+            if current_state in self.f:
+                return True
+
+        return False
+
+    def validate(self) -> bool:
+        if self.q0 not in self.q:
+            return False
+
+        for final_state in self.f:
+            if final_state not in self.q:
+                return False
+
         for key in self.s.keys():
+            state = key[0]
+            symbol = key[1]
+
+            if state not in self.q:
+                return False
+
+            if symbol not in self.e:
+                return False
+
+            for resulting_state in self.s[key]:
+                if resulting_state not in self.q:
+                    return False
+        return True
+
+    def is_dfa(self) -> bool:
+        unique_keys = set(self.s.keys())
+        for key in unique_keys:
             if len(self.s[key]) > 1:
                 return False
         return True

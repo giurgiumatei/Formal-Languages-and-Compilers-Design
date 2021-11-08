@@ -31,6 +31,9 @@ class UI:
     def check_if_dfa(self):
         print(self.finite_automata.is_dfa())
 
+    def check_if_valid(self):
+        print("Is valid") if self.finite_automata.validate() else print("Is not valid")
+
     def run(self):
         print("Set of all states:")
         self.display_set_of_all_states()
@@ -49,3 +52,9 @@ class UI:
 
         print("Is DFA:")
         self.check_if_dfa()
+
+        self.check_if_valid()
+
+        print("Check if sequence is valid: ")
+        input_sequence = input()
+        print(self.finite_automata.is_accepted(input_sequence))
